@@ -1,0 +1,12 @@
+<h1>Mis productos:</h1>
+
+<ul>
+    {{#each productos}}
+        {{#if status}}
+            <p>{{title}}</p>
+            <p>description: {{description}}</p>
+            <p>Price: ${{price}}</p>
+            <p>Stock: {{stock}} Uni.</p>
+        {{/if}}
+    {{/each}}
+</ul>
