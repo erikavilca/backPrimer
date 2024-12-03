@@ -1,8 +1,1 @@
-[
-    {
-        "title": "papa frita",
-        "descripction": "crocantes y ricas",
-        "price": 2000,
-        "stock":10
-    }
-]
+[{"id":"c2232c84afcf6ca6da0f","title":"Torta de chocolate","description":"Esta torta es muy humeda y tiene 2 tipos de chocolate, tiene almendras y una base especial","code":"tor20choco2","category":"Tortas","price":4500,"stock":13,"status":true,"thumbnails":[]},{"id":"04bed65dd07c96b04ff2","title":"Carrot cake","description":"Es humedad, se destaca por contener zanahoria, nueceses, almendras, chocolate blanco, canela, entre otras cosas.","code":"tor18Ca1","category":"Tortas","price":5900,"stock":9,"status":true,"thumbnails":[]},{"id":"a506867b6d255cc99a23","title":"Chipa","description":"Extra queso, original.","code":"chip90","category":"salados","price":3000,"stock":28,"status":true,"thumbnails":[]},{"id":"51cfa344660ddba4f608","title":"Latte","description":"cafe, leche y espuma de leche.","code":"latte90Caf","category":"Caffe","price":3400,"stock":100,"status":true,"thumbnails":[]},{"id":"eca9332bfe84aabab64a","title":"Americano","description":"Espresso con agua","code":"Ame10Caf","category":"Caffe","price":2400,"stock":100,"status":false,"thumbnails":[]}]

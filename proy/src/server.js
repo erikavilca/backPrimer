@@ -20,31 +20,12 @@ app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
 app.use("/upload", multerRouter);
 
-const productos = [
-  {
-    title: "Pizza",
-    description: "rico",
-    price: 4900,
-    stock: 20,
-    status: true,
-  },
-  {
-    title: "Empanadas",
-    description: "good",
-    price: 1000,
-    stock: 40,
-    status: true,
-  },
-  {
-    title: "papa frita",
-    description: "rica y crocantes",
-    price: 3200,
-    stock: 10,
-    status: true,
-  },
-];
 app.get("/", (req, res) => {
-  res.render("productos", { productos });
+  res.render("/termplates/productos", {
+    productos: productos,
+    js: `productos.js`,
+    css: `main.css`,
+  });
 });
 
 app.listen(PORT, () => {

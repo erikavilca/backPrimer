@@ -14,8 +14,8 @@ const productos = JSON.parse(productosData);
 
 productRouter.get("/", (req, res) => {
   const { limit } = req.query;
-  const productos = productos.slice(0, limit);
-  res.status(200).send(productos);
+  const products = productos.slice(0, limit);
+  res.status(200).render("templates/home", { productos: products, js: `productos.js` });
 });
 
 productRouter.get("/", (req, res) => {
@@ -62,8 +62,11 @@ productRouter.put("/:pid", async (req, res) => {
     thumbnails,
     status,
   } = req.body;
-  const i = productos.findIndex((prod) => prod.id == idProducto);
 
+  /* el FINDINDEX lo que hace es buscar el indice de el array que seleccionamos
+    y que cumple la condicion, en este caso el ID*/
+
+  const i = productos.findIndex((prod) => prod.id == idProducto);
   if (indice != -1) {
     productos[i].title = title;
     productos[i].description = description;

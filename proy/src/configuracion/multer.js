@@ -1,3 +1,4 @@
+//Para descargar una imagen o publicar. 
 import multer from "multer";
 import { __dirname } from "../path.js";
 
