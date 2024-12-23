@@ -1,5 +1,3 @@
-
-
 import { Router } from "express";
 import { uploadProds } from "../configuracion/multer.js";
 
