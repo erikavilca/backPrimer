@@ -1,34 +1,5 @@
 import productModel from "../models/product.model.js";
 
-export const getProducts = async (req, res) => {
-  try {
-    const { limit, page, filter, metFilter, ord } = req.query;
-
-    const pag = page !== undefined ? page : 1;
-    const lim = limit !== undefined ? limit : 10;
-    const query = metFilter !== undefined ? { [metFilter]: filter } : {};
-    const orQuery = ord !== undefined ? { price: ord } : {};
-
-    const prods = await productModel.paginate(query, {
-      limit: lim,
-      page: pag,
-      orQuery,
-    });
-
-    console.log(prods);
-    res.status(200).send(prods)
-    // res
-    //   .status(200)
-    //   .render("templates/home", {
-    //     productos: prods,
-    //     js: "productos.js",
-    //     css: "productos.css",
-    //   });
-  } catch (e) {
-    res.status(500).send("Error al consultar productos: ", e);
-  }
-};
-
 export const getProduct = async (req, res) => {
   try {
     const idProd = req.params.pid;
@@ -44,9 +15,14 @@ export const createProduct = async (req, res) => {
   try {
     const product = req.body;
     const respuesta = await productModel.create(product);
-    res.status(201).send("Producto creado correctamente", respuesta );
+    // res.status(201).send("Producto creado correctamente", respuesta );
+    res.status(201).json({
+      message: "Producto creado correctamente",
+      product: respuesta,
+    });
   } catch (e) {
-    res.status(500).send("Error al crear producto: ", e);
+    console.log(e);
+    res.status(500).send("Error al crear producto, mirar por consola el error");
   }
 };
 
