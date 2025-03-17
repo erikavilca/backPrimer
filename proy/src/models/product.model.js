@@ -43,6 +43,8 @@ productSchema.plugin(mongoosePaginate);
 const productModel = model("products", productSchema);
 
 export default productModel;
+
+
 export const getProducts = async (req, res) => {
   try {
     const { limit, page, filter, metFilter, ord } = req.query;
@@ -52,17 +54,19 @@ export const getProducts = async (req, res) => {
     const query = metFilter !== undefined ? { [metFilter]: filter } : {};
     const orQuery = ord !== undefined ? { price: ord } : {};
 
-    const prods = await productModel.paginate(query, {
+    const prod = await productModel.paginate(query, {
       limit: lim,
       page: pag,
       orQuery,
     });
 
-    console.log(prods);
-    res.status(200).render("templates/products", {
-      products: prods,
-      js: "productos.js",
-      css: "productos.css",
+    // console.log(prod);
+    res.status(200).render
+    (
+      "templates/products", {
+      products: prod,
+      js: "products.controllers.js",
+      // css: "productos.css",
     });
   } catch (e) {
     res.status(500).send("Error al consultar productos: ", e);

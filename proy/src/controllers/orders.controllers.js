@@ -28,9 +28,9 @@ export const getOrders = async (req, res) => {
       },
     ]);
     console.log(orders);
-    res.status(200).send(orderModel);
+    return res.status(200).json(orders);
   } catch (e) {
-    res.status(500).send("Error al consultar ordenes:", e);
+    res.status(500).json({error:"Error al consultar ordenes:", e});
   }
 };
 
@@ -39,8 +39,8 @@ export const createOrder = async (req, res) => {
     const order = req.body;
     const respuesta = await orderModel.create(order);
     console.log(respuesta);
-    res.status(201).send("Orden creada correctamente");
+    res.status(201).send(respuesta);
   } catch (e) {
-    res.status(500).send("Error al crear Orden: ", e);
+    res.status(500).send({error:"Error al crear Orden: ", e});
   }
 };

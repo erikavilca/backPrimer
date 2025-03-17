@@ -1,15 +1,21 @@
 import productModel from "../models/product.model.js";
+import {getProducts} from "../models/product.model.js";
 
 export const getProduct = async (req, res) => {
   try {
     const idProd = req.params.pid;
-    const prod = await productModel.findById(idProd);
-    if (prod) res.status(200).send(prod);
+    const prod = getProducts.prod
+    
+    // console.log(prod)
+        if (prod) res.status(200).send(prod);
     else res.status(404).send("Producto no existe");
   } catch (e) {
     res.status(500).send("Error al consultar producto: ", e);
   }
 };
+
+
+
 
 export const createProduct = async (req, res) => {
   try {
