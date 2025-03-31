@@ -1,48 +1,61 @@
-export const verifLogin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await userModel.findOne({ email });
 
-    if (!user) {
-      return res.status(401).json({ error: "Usuario no encontrado" });
+import userService from "../services/user.service.js";
+import jwt from "jsonwebtoken";
+
+class UserController {
+    async register(req, res) {
+        const { first_name, last_name, email, age, password } = req.body;
+
+        try {
+            const nuevoUsuario = await userService.registerUser({ first_name, last_name, email, age, password });
+
+            const token = jwt.sign({
+                usuario: `${nuevoUsuario.first_name} ${nuevoUsuario.last_name}`,
+                email: nuevoUsuario.email,
+                role: nuevoUsuario.role
+            }, "coderhouse", { expiresIn: "1h" });
+
+            res.cookie("coderCookieToken", token, { maxAge: 360000, httpOnly: true });
+            res.redirect("api/sessions/current");
+        } catch (error) {
+            res.status(500).send("Error del Server TERRIBLEEE" + error);
+        }
     }
 
-    if (!isValidPassword(password, email)) {
-      return res.status(401).json({ error: "Contraseña incorrecta" });
+    async login(req, res) {
+        const { email, password } = req.body;
+
+        try {
+            const user = await userService.loginUser(email, password);
+            console.log(user); 
+
+            const token = jwt.sign({
+                usuario: `${user.first_name} ${user.last_name}`,
+                email: user.email,
+                role: user.role
+            }, "coderhouse", { expiresIn: "1h" });
+            
+            res.cookie("coderCookieToken", token, { maxAge: 360000, httpOnly: true });
+            res.redirect("/api/sessions/current");
+        } catch (error) {
+            res.status(500).send("Error del Server TERRIBLEEE" + error);
+        }
     }
 
-    //Generar el token:
-    const token = jwt.sign(
-      { usuario: user.email, rol: user.rol },
-      "coderhouse",
-      { expiresIn: "1h" }
-    );
-    res.status(200).render("templates/login");
-    // res.cookie("coderCookieToken", token, { httpOnly: true, maxAge: 3600000 });
-    // res.redirect("/api/sessions/current");
-  } catch (error) {
-    console.error("Error al hacer login", error);
-    res.status(500).json({ error: "Error interno del servidor" });
-  }
-};
+    async current(req, res) {
 
-export const Register = async (req, res) => {
-  try {
-    const { usuario, password } = req.body;
+        if (req.user) {
+            const user = req.user;
+            res.render("home", { user });
+        } else {
+            res.send("No autorizado");
+        }
+    }
 
-    const nuevoCarrito = await manager.crearCarrito();
+    async logout(req, res) {
+        res.clearCookie("coderCookieToken");
+        res.redirect("login");
+    }
+}
 
-    const user = new userModel({
-      usuario,
-      password: createHash(password),
-      cart: nuevoCarrito._id,
-    });
-
-    // await user.save();
-    res.status(200).render("templates/registrarse");
-    // res.redirect("/login");
-  } catch (error) {
-    console.error("Error al registrar usuario", error);
-    res.status(500).json({ error: "Error interno del servidor" });
-  }
-};
+export default UserController;  

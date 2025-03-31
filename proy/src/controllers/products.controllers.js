@@ -1,27 +1,26 @@
-import productModel from "../models/product.model.js";
-import {getProducts} from "../models/product.model.js";
+import productModel from "../dao/models/product.model.js";
 
-export const getProduct = async (req, res) => {
+export const getProducts = async (req, res) => {
   try {
-    const idProd = req.params.pid;
-    const prod = getProducts.prod
-    
-    // console.log(prod)
-        if (prod) res.status(200).send(prod);
-    else res.status(404).send("Producto no existe");
+    const prod = await productModel.find()
+
+    if (prod) {
+      res.status(200).send("products", { products: prod });
+      res.stat
+      // res.status(200).json({prod})
+    } else {
+      res.status(404).json({ mensaje: "Producto no existe" });
+    }
   } catch (e) {
-    res.status(500).send("Error al consultar producto: ", e);
+    res.status(500).json({ mensaje: "Error al consultar producto: ", e });
   }
 };
-
-
-
 
 export const createProduct = async (req, res) => {
   try {
     const product = req.body;
     const respuesta = await productModel.create(product);
-    // res.status(201).send("Producto creado correctamente", respuesta );
+    res.status(201).send("Producto creado correctamente", respuesta );
     res.status(201).json({
       message: "Producto creado correctamente",
       product: respuesta,
