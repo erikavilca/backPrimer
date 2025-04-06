@@ -11,13 +11,17 @@ router.get("/", async (req, res) => {
   try {
         const { limit = 10, page = 1, sort, query } = req.query;
 
-        const productos = await productManager.getProducts({
+        const products = await productManager.getProducts({
             limit: parseInt(limit),
             page: parseInt(page),
             sort,
             query,
         });
-        res.render("products")
+
+        
+//lo paso a un arraay puro porque sino no me muestra en el hdb.
+        const plainProducts = JSON.parse(JSON.stringify(products.docs || products));
+        res.render("products", { products: plainProducts });
 
     } catch (error) {
         console.error("Error al obtener productos", error);

@@ -14,6 +14,7 @@ class ProductManager {
     try {
       if (!title || !description || !price || !code || !stock || !category) {
         console.log("Todos los campos son obligatorios");
+
         return;
       }
 
@@ -60,19 +61,19 @@ class ProductManager {
         }
       }
 
-      const productos = await ProductModel.find(queryOptions)
+      const products = await ProductModel.find(queryOptions)
         .sort(sortOptions)
         .skip(skip)
-        .limit(limit);
+        .limit(limit)
+        .lean();
 
       const totalProducts = await ProductModel.countDocuments(queryOptions);
-
       const totalPages = Math.ceil(totalProducts / limit);
       const hasPrevPage = page > 1;
       const hasNextPage = page < totalPages;
 
       return {
-        docs: productos,
+        docs: products,
         totalPages,
         prevPage: hasPrevPage ? page - 1 : null,
         nextPage: hasNextPage ? page + 1 : null,

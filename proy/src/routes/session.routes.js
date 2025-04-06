@@ -9,7 +9,7 @@ const userController = new UserController();
 
 router.post("/register", userController.register);
 router.post("/login", userController.login);
-router.get("/current", passport.authenticate("jwt", { session: false }), userController.current)
+// router.get("/inicio", passport.authenticate("jwt", { session: false }), userController.inicio)
 router.post("/logout", userController.logout);
 
 

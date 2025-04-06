@@ -1,7 +1,7 @@
 /* Estilos generales */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #fff8f5cf;
     color: #333;
     margin: 0;
     padding: 20px;
@@ -26,7 +26,7 @@ form {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     max-width: 400px;
     margin: 0 auto;
 }
@@ -53,7 +53,7 @@ input[type="text"], input[type="email"], input[type="number"], input[type="passw
 button[type="submit"] {
     width: 100%;
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: #d77838;
     color: white;
     border: none;
     border-radius: 4px;
@@ -63,18 +63,34 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #45a049;
+    background-color: #ac6739;
 }
 
 /* Estilo para el contenedor de productos */
-.product-container {
+.products-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-between;
     gap: 20px;
-    margin-bottom: 20px;
-}
+    margin: 20px 50px;
 
+    /* margin-bottom: 20px; */
+}
+.product{
+    background-color: #a8564d3f;
+    width: 280px;
+    padding: 20px 30px;
+    text-align: center;
+}
+.product button{
+    background-color: #d8774e86;
+    padding: 10px 20px ;
+    border: none;
+}
+.product button:hover{
+    background-color: rgba(188, 111, 80, 0.714);
+    border-radius: 10px;
+}
 /* Estilo para cada producto */
 .product-card {
     background-color: #fff;

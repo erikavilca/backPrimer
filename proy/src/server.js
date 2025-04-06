@@ -34,7 +34,7 @@ app.use("/public", express.static(__dirname + "/public"));
 app.use("/api/sessions", sessionRouter);
 app.use("/products", productRouter);
 app.use("/api/carts", cartRouter); //areglar carts
-app.use("/", viewsRouter)
+app.use("/", (req, res)=> {res.send("bienbnido ")})
 
 app.listen(PORT, () => {
   console.log("Server on port", PORT);
