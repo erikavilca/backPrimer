@@ -38,7 +38,7 @@ class UserController {
 
       //Token pero hecho por capas porque se me hace mas comprensible.
       const payload = {
-        usuario: newuser.first_name,
+        usuario: `${newuser.first_name} ${newuser.last_name}`,
         email: newuser.email,
         role: newuser.role,
       };
@@ -47,24 +47,25 @@ class UserController {
       const token = jwt.sign(payload, ContraseñaTokenSecreta, TimeExpire);
 
       res.cookie("tokenUsers", token, { maxAge: 360000, httpOnly: true });
-      res.render("home", { newuser });
+
+      res.redirect("/api/sessions/inicio")
 
     } catch (error) {
       res.status(500).send("Tenes un " + error);
     }
   }
+  
 
-  //no llegua hasta aca, creo que es porque no llega el token a la parte de inciio para verificar
-
-  async inicio(req, res) {
-    const user = req.newuser; // ← esto lo convierte a objeto plano
-console.log(user)
-    if (user) {
-      res.render("home", { user });
-    } else {
-      res.send("No esta autoorizado");
+    async inicio(req, res) {
+      const user = req.user; 
+      res.render("home", { user }); 
     }
-  }
-}
+  
 
+  async logout(req, res) {
+    res.clearCookie("tokenUsers");
+    res.redirect("/login");
+  }
+
+}
 export default UserController;

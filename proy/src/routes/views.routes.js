@@ -76,8 +76,5 @@ viewsRouter.get("/login", (req, res) => {
 viewsRouter.get("/register", (req, res) => {
   res.render("register");
 });
-viewsRouter.get("/home", (req, res)=> {
-  res.render("inicio")
-})
 
 export default viewsRouter;
