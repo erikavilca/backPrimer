@@ -4,9 +4,8 @@ import jwt from "jsonwebtoken";
 class UserController {
   async register(req, res) {
     const { first_name, last_name, email, age, password } = req.body;
-
     try {
-      const nuevoUsuario = await userService.registerUser({
+      const users = await userService.registerUser({
         first_name,
         last_name,
         email,
@@ -14,14 +13,19 @@ class UserController {
         password,
       });
 
-      // const token = jwt.sign({
-      //     usuario: `${nuevoUsuario.first_name} ${nuevoUsuario.last_name}`,
-      //     email: nuevoUsuario.email,
-      //     role: nuevoUsuario.role
-      // }, "coderhouse", { expiresIn: "1h" });
+      //Token pero hecho por capas porque se me hace mas comprensible.
+      const payload = {
+        usuario: users.first_name,
+        email: users.email,
+        role: users.role,
+      };
+      const ContraseñaTokenSecreta = process.env.JWT_SECRET;
+      const TimeExpire = { expiresIn: "1h" };
 
-      res.cookie("cookie", { maxAge: 360000, httpOnly: true });
-      res.redirect("/api/sessions/logout");
+      const token = jwt.sign(payload, ContraseñaTokenSecreta, TimeExpire);
+      res.cookie("tokenUsers", token, { maxAge: 360000, httpOnly: true });
+
+      res.redirect("/login");
     } catch (error) {
       res.status(500).send("Tenes un" + error);
     }
@@ -29,48 +33,38 @@ class UserController {
 
   async login(req, res) {
     const { email, password } = req.body;
-
     try {
-    const user = await userService.loginUser(email, password);
-    console.log(user);
+      const newuser = await userService.loginUser(email, password);
 
-    const token = jwt.sign(
-        {
-        usuario: `${user.first_name} ${user.last_name}`,
-        email: user.email,
-        role: user.role,
-        },
-        "coderhouse",
-        { expiresIn: "1h" }
-    );
+      //Token pero hecho por capas porque se me hace mas comprensible.
+      const payload = {
+        usuario: newuser.first_name,
+        email: newuser.email,
+        role: newuser.role,
+      };
+      const ContraseñaTokenSecreta = process.env.JWT_SECRET;
+      const TimeExpire = { expiresIn: "1h" };
+      const token = jwt.sign(payload, ContraseñaTokenSecreta, TimeExpire);
 
-    res.cookie("cookie", token, {
-        maxAge: 360000,
-        httpOnly: true,
-    });
-
-    res.render("home" ,{user});
+      res.cookie("tokenUsers", token, { maxAge: 360000, httpOnly: true });
+      res.render("home", { newuser });
 
     } catch (error) {
-        res.status(500).send("Tenes un " + error);
+      res.status(500).send("Tenes un " + error);
     }
-    }
+  }
 
   //no llegua hasta aca, creo que es porque no llega el token a la parte de inciio para verificar
 
-    // async inicio (req, res) {
-    // if (req.user) {
-    //   const user = req.user;
-    //   res.render("home", { user });
-    // } else {
-    //   res.send("No esta autoorizado");
-    // }
-    // }
-
-    async logout(req, res) {
-    res.clearCookie("cookie");
-    res.render("login");
+  async inicio(req, res) {
+    const user = req.newuser; // ← esto lo convierte a objeto plano
+console.log(user)
+    if (user) {
+      res.render("home", { user });
+    } else {
+      res.send("No esta autoorizado");
     }
+  }
 }
 
 export default UserController;

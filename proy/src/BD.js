@@ -5,3 +5,6 @@ mongoose.connect(
   )
   .then(() => console.log("BDD conectado"))
   .catch((e) => console.log("error al conectar BDD:", e));
+
+
+  // npm install --save-dev jest
